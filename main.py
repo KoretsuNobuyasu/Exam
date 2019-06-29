@@ -3,7 +3,7 @@
 
 import sys
 from time import sleep
-import Edit, New
+import Edit, New, Problem
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPlainTextEdit, QPushButton, QVBoxLayout, QWidget, QDialog
 from PyQt5.QtCore import QCoreApplication
 
@@ -23,6 +23,8 @@ def main(argv):
         New.new()
     elif option == '--edit':
         Edit.edit()
+    elif option == '--main':
+        Problem.start()
     else:
         print('やり直してください')
 
