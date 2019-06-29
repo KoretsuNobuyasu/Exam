@@ -30,18 +30,9 @@ class QandA():
         self.cursor.execute('insert into qanda values(null,?,?)',send_qanda)
         self.con.commit()
 
-        with open('./new.txt', mode='a') as f:
-            f.write(self.question)
     def finish(self):
-        lines = list()
-        with open('./new.txt', mode='r') as f:
-            lines.append(f.read())
-        with open('./new.txt', mode='w') as f:
-            pass
-        with open('./all.txt', mode='a') as f:
-            for line in lines:
-                f.write(line)
         self.con.close()
+
 
 def new():
     app = QApplication(sys.argv)
