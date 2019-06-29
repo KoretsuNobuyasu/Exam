@@ -1,7 +1,1 @@
-sample
-¥
-testsample
-¥
-testsamplesample
-¥
-samplesampletestsampletestsample¥samplesamplesample
+次の問題を入力してください4

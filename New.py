@@ -14,20 +14,21 @@ class QandA():
         self.answer = ''
         self.con = sqlite3.connect('QandA.db')
         self.cursor = self.con.cursor()
-        sql = 'create table if not exists qanda (id int not null, problem char(255) not null, answer char(255) not null)'
+        sql = 'create table if not exists qanda (id integer primary key, problem char(255) not null, answer char(255) not null)'
         self.cursor.execute(sql)
         self.con.commit()
 
-    def send(self, text):
+    def send(self, question, answer):
         print('==========')
-        print(text)
-        text = text.split('¥')
+        print(question)
         print('------')
-        print(text[0])
+        print(answer)
         print('------')
-        self.question = text[0]
-        self.answer = text[1]
-        self.cursor.execute('insert into qanda (problem, answer) values(%s, %s)'(self.question, self.answer))
+        self.question = question
+        self.answer = answer
+        send_qanda = [self.question, self.answer]
+        self.cursor.execute('insert into qanda values(null,?,?)',send_qanda)
+        self.con.commit()
 
         with open('./new.txt', mode='a') as f:
             f.write(self.question)
@@ -53,6 +54,7 @@ def new():
     finish_button.setText('Finish')
     #Create text entry box
     text_edit_widget = QPlainTextEdit()
+    answer_edit_widget = QPlainTextEdit()
 
     #Change font, color of text entry box
     text_edit_widget.setStyleSheet(
@@ -60,9 +62,15 @@ def new():
             color: #00FF00;
             text-decoration: underline;
             font-family: Courier;}""")
+    answer_edit_widget.setStyleSheet(
+    """QPlainTextEdit {background-color:#333;
+            color: #00FF00;
+            text-decoration: underline;
+            font-family: Courier;}""")
 
     layout = QVBoxLayout()
     layout.addWidget(text_edit_widget)
+    layout.addWidget(answer_edit_widget)
     layout.addWidget(save_button)
     layout.addWidget(finish_button)
     #"Central Widget" expands to fill all available space
@@ -72,16 +80,21 @@ def new():
     #Print text to concole whenever it changes
     text_edit_widget.textChanged.connect(
         lambda: print(text_edit_widget.document().toPlainText()))
+    answer_edit_widget.textChanged.connect(
+        lambda: print(answer_edit_widget.document().toPlainText()))
 
     # Write text to File whenever it changes
     save_button.clicked.connect(
-        lambda: qanda.send(text_edit_widget.document().toPlainText()))
+        lambda: qanda.send(text_edit_widget.document().toPlainText(), answer_edit_widget.document().toPlainText()))
 
     # Set value of text when push save
     save_button.clicked.connect(
         lambda: text_edit_widget.document().setPlainText("次の問題を入力してください"))
+    save_button.clicked.connect(
+        lambda: answer_edit_widget.document().setPlainText("回答を入力してください"))
     # Set initial value of text
-    text_edit_widget.document().setPlainText("問題と解答を入力してください。splitは¥マークです。\nFinishボタンから終了してください。予期せぬエラーが発生する可能性があります。")
+    text_edit_widget.document().setPlainText("問題を入力してください。")
+    answer_edit_widget.document().setPlainText("回答を入力してください")
 
     window.show()
 
