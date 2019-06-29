@@ -16,6 +16,7 @@ def main(argv):
                 終了ボタンから終了した場合は正常に終了できません。
                 --new     新たなデータを入力できます
                 --edit    データを更新できます
+                --main    問題を開始します
         """
         print(help)
     elif option == '--new':

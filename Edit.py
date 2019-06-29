@@ -14,7 +14,6 @@ class QandA():
         self.data = list()
         self.con = sqlite3.connect('QandA.db')
         self.cursor = self.con.cursor()
-        #self.c.execute("select * from qanda where *")
         for row in self.cursor.execute("select * from qanda"):
             print(row[0], self.number)
             print(type(row[0]), type(self.number))
@@ -24,11 +23,6 @@ class QandA():
             else:
                 pass
     def save(self, question, answer):
-        print('==========')
-        print(question)
-        print('------')
-        print(answer)
-        print('------')
         self.question = question
         self.answer = answer
         send_q = [self.question, self.number]
